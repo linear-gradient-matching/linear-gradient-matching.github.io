@@ -1,10 +1,562 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Test</title>
-</head>
-<body>
+  <meta charset="utf-8">
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">-->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="transparent">
 
-</body>
-</html>
+  <!-- Primary Meta Tags -->
+  <!-- TODO: Replace with your paper title and author names -->
+  <meta name="title" content="Dataset Distillation for Pre-Trained Self-Supervised Vision Models - George Cazenavette, Antonio Torralba, Vincent Sitzmann">
+  <!-- TODO: Write a compelling 150-160 character description of your research -->
+  <meta name="description" content="We distill image datasets down to a single sample per class to train liner classifiers on top of pre-trained self-supervised vision models.">
+  <!-- TODO: Add 5-10 relevant keywords for your research area -->
+  <meta name="keywords" content="Dataset Distillation, Synthetic Data, DINO, CLIP, computer vision, AI, deep learning">
+  <!-- TODO: List all authors -->
+  <meta name="author" content="George Cazenavette, Antonio Torralba">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <!-- TODO: Replace with your institution or lab name -->
+  <meta property="og:site_name" content="MIT CSAIL">
+  <!-- TODO: Same as paper title above -->
+  <meta property="og:title" content="Dataset Distillation for Pre-Trained Self-Supervised Vision Models">
+  <!-- TODO: Same as description above -->
+  <meta property="og:description" content="Distilling image datasets to a single sample per class to train classifiers on top of pre-trained self-supervised vision models.">
+  <!-- TODO: Replace with your actual website URL -->
+  <meta property="og:url" content="https://https://linear-gradient-matching.github.io">
+  <!-- TODO: Create a 1200x630px preview image and update path -->
+  <meta property="og:image" content="https://linear-gradient-matching.github.io/assets/preview_12x6.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="Dataset Distillation for Pre-Trained Self-Supervised Vision Models - Research Preview">
+  <meta property="article:published_time" content="2024-01-01T00:00:00.000Z">
+  <meta property="article:author" content="George Cazenavette">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="Dataset Distillation">
+  <meta property="article:tag" content="Synthetic Data">
+  <meta property="article:tag" content="DINO">
+  <meta property="article:tag" content="CLIP">
+  <meta property="article:tag" content="Computer Vision">
+  <meta property="article:tag" content="AI">
+  <meta property="article:tag" content="deep learning">
+  <meta property="article:tag" content="NeurIPS">
+
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO: Replace with your lab/institution Twitter handle -->
+  <meta name="twitter:site" content="@GCazenavette">
+  <!-- TODO: Replace with first author's Twitter handle -->
+  <meta name="twitter:creator" content="@GCazenavette">
+  <!-- TODO: Same as paper title above -->
+  <meta name="twitter:title" content="Dataset Distillation for Pre-Trained Self-Supervised Vision Models">
+  <!-- TODO: Same as description above -->
+  <meta name="twitter:description" content="Distilling image datasets to a single sample per class to train classifiers on top of pre-trained self-supervised vision models.">
+  <!-- TODO: Same as social preview image above -->
+  <meta name="twitter:image" content="https://linear-gradient-matching.github.io/assets/preview_12x6.png">
+  <meta name="twitter:image:alt" content="Dataset Distillation for Pre-Trained Self-Supervised Vision Models - Research Preview">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="Dataset Distillation for Pre-Trained Self-Supervised Vision Models">
+  <meta name="citation_author" content="Cazenavette, George">
+  <meta name="citation_author" content="Torralba, Antonio">
+  <meta name="citation_author" content="Sitzmann, Vincent">
+  <meta name="citation_publication_date" content="2025">
+  <meta name="citation_conference_title" content="NeurIPS">
+  <meta name="citation_pdf_url" content="https://YOUR_DOMAIN.com/static/pdfs/paper.pdf">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <!-- TODO: Replace with your paper title and authors -->
+  <title>Dataset Distillation for Pre-Trained Self-Supervised Vision Models - George Cazenavette, Antonio Torralba, Vincent Sitzmann | Academic Research</title>
+
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/favicon.ico">
+
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/chart.css">
+
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  // Background is now handled by CSS body::before pseudo-element
+  // No JavaScript needed for background anymore
+});
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="static/js/chart.js"></script>
+
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Dataset Distillation for Pre-Trained Self-Supervised Vision Models",
+    "description": "Distilling image datasets to a single sample per class to train classifiers on top of pre-trained self-supervised vision models.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "George Cazenavette",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Massachusetts Institute of Technology"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Antonio Torralba",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Massachusetts Institute of Technology"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Vincent Sitzmann",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Massachusetts Institute of Technology"
+        }
+      }
+    ],
+    "datePublished": "2025-12-01",
+    "publisher": {
+      "@type": "Organization",
+      "name": "NeurIPS"
+    },
+    "url": "https://https://linear-gradient-matching.github.io",
+    "image": "https://https://linear-gradient-matching.github.io/assets/preview_12x6.png",
+    "keywords": ["Dataset Distillation", "Synthetic Data", "DINO", "CLIP", "computer vision"],
+    "abstract": "The task of dataset distillation aims to find a small set of synthetic images such that training a model on them reproduces the performance of the same model trained on a much larger dataset of real samples. Existing distillation methods focus on synthesizing datasets that enable training randomly initialized models. In contrast, state-of-the-art vision approaches are increasingly building on large, pre-trained self-supervised models rather than training from scratch. In this paper, we investigate the problem of distilling datasets that enable us to optimally train linear probes on top of such large, pre-trained vision models. We introduce a method of dataset distillation for this task called Linear Gradient Matching that optimizes the synthetic images such that, when passed through a pre-trained feature extractor, they induce gradients in the linear classifier similar to those produced by the real data. Our method yields synthetic data that outperform all real-image baselines and, remarkably, generalize across pre-trained vision models, enabling us, for instance, to train a linear CLIP probe that performs competitively using a dataset distilled via a DINO backbone. Further, we show that our distilled datasets are exceptionally effective for fine-grained classification and provide a valuable tool for model interpretability, predicting, among other things, how similar two models' embedding spaces are under the platonic representation hypothesis or whether a model is sensitive to spurious correlations in adversarial datasets.",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "mainEntity": {
+      "@type": "WebPage",
+      "@id": "https://linear-gradient-matching.github.io/"
+    },
+    "about": [
+      {
+        "@type": "Thing",
+        "name": "Dataset Distillation"
+      },
+      {
+        "@type": "Thing",
+        "name": "Synthetic Data"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Website/Organization Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "MIT CSAIL",
+    "url": "https://YOUR_INSTITUTION_WEBSITE.com",
+    "logo": "https://YOUR_DOMAIN.com/static/images/favicon.ico",
+    "sameAs": [
+      "https://x.com/GCazenavette",
+      "https://bsky.app/profile/gcazenavette.bsky.social",
+      "https://github.com/GeorgeCazenavette"
+    ]
+  }
+  </script>
+</head>
+<div class="fixed-background"></div>
+
+<body>
+  <div class="glass-container">
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- More Works Dropdown -->
+  <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Papers on Dataset Distillation">
+      <i class="fas fa-flask"></i>
+      More Research
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>More Papers on Dataset Distillation</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="works-list">
+        <!-- TODO: Replace with your lab's related works -->
+        <a href="https://www.tongzhouwang.info/dataset_distillation/" class="work-item" target="_blank">
+          <div class="work-info">
+            <!-- TODO: Replace with actual paper title -->
+            <h5>Dataset Distillation</h5>
+            <!-- TODO: Replace with brief description -->
+            <p>Introduces the problem of Dataset Distillation and presents an initial approach.</p>
+            <!-- TODO: Replace with venue and year -->
+            <span class="work-venue">arXiv 2018</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <!-- TODO: Add more related works or remove extra items -->
+        <a href="https://georgecazenavette.github.io/mtt-distillation/" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Dataset Distillation by Matching Training Trajectories</h5>
+            <p>Proposes the Trajectory Matching approach to Dataset Distillation, reaching state-of-the-art performance.</p>
+            <span class="work-venue">CVPR 2022</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://georgecazenavette.github.io/glad/" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Generalizing Dataset Distillation via Deep Generative Prior</h5>
+            <p>Regularizes distilled images by optimizing them in the latent space of a generative model.</p>
+            <span class="work-venue">CVPR 2023</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- TODO: Replace with your paper title -->
+            <h1 class="title is-1 publication-title">Dataset Distillation for<br>Pre&#8209Trained Self&#8209Supervised<br>Vision Models</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- TODO: Replace with your paper authors and their personal links -->
+              <span class="author-block">
+                <a href="https://georgecazenavette.github.io" target="_blank">George Cazenavette</a>,</span>
+                <span class="author-block">
+                  <a href="https://groups.csail.mit.edu/vision/torralbalab/" target="_blank">Antonio Torralba</a>,</span>
+                  <span class="author-block">
+                    <a href="https://www.vincentsitzmann.com/" target="_blank">Vincent Sitzmann</a>
+                  </span>
+                  </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <!-- TODO: Replace with your institution and conference/journal info -->
+                    <span class="author-block">Massachusetts Institute of Technology<br>NeurIPS 2025</span>
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                         <!-- TODO: Update with your arXiv paper ID -->
+                      <span class="link-block">
+                        <a href="/gallery" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-images"></i>
+                        </span>
+                        <span>Gallery</span>
+                      </a>
+                    </span>
+
+
+                  <!-- TODO: Replace with your GitHub repository URL -->
+                  <span class="link-block">
+                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+                <!-- TODO: Update with your arXiv paper ID -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <!-- TODO: Replace with your teaser video -->
+      <video poster="assets/timelapse_poster.png" id="tree" autoplay muted loop playsinline width="100%" preload="metadata">
+        <!-- TODO: Add your video file path here -->
+        <source src="assets/timelapse_birds.mp4" type="video/mp4">
+      </video>
+      <!-- TODO: Replace with your video description -->
+<!--      <h2 class="subtitle has-text-centered">-->
+<!--        Our method leverages pre-trained self-supervised vision models to distill datasets to just a single image per class.-->
+<!--      </h2>-->
+    </div>
+  </div>
+</section>
+<!-- End teaser video -->
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-max-desktop">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="subtitle has-text-justified">
+          <!-- TODO: Replace with your paper abstract -->
+          <p>
+            We apply dataset distillation to pre-trained self-supervised vision models by directly optimizing just a single image per class to train an optimal linear classifier on top of these models.
+            To accomplish this, we introduce <b>Linear Gradient Matching</b> (described below) to directly optimize our distilled images from scratch.
+            Our method out-performs all real-image baselines and further excels on fine-grained visual classification datasets.
+            Furthermore, the distilled images offer interesting interpretability results by partially revealing what and how these models actually <i>see</i>, particularly when trained on data with spurious correlations.
+            Please see our <a class="important-link" href="http://arxiv.org">paper</a> for full results and our <a class="important-link" href="gallery" target="_blank">Image Gallery</a> to browse all distilled images.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-max-desktop">
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <!-- TODO: Replace with your paper abstract -->
+          <div>
+            <img src="assets/linear_dd.png" alt="Linear Gradient Matching" style="margin-bottom: 1rem">
+          </div>
+          <p class="subtitle has-text-justified">
+            We optimize our synthetic images such that they induce <i>similar gradients</i> as real images when training a linear classifier (W) on top of a pre-trained model (ϕ).
+            To do this, we perform a bi-level optimization by finding the cosine distance between the real and synthetic gradients and back-propagating through the initial gradient calculation all the way to the synthetic images themselves.
+      </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+
+      <div class="column is-max-desktop">
+        <h2 class="title is-3" style="margin-bottom: 0.0rem !important">ImageNet-1k (1&nbspImage/Class)</h2>
+<!--        <h2 class="title is-3">Method</h2>-->
+        <div class="content has-text-justified">
+          <!-- TODO: Replace with your paper abstract -->
+          <div class="chart-container">
+          <canvas id="chart1k"></canvas>
+            </div>
+          <p class="subtitle has-text-justified">
+            After distillation, we evaluate by training new linear classifiers from scratch on the synthetic data (or real-image baselines).
+            Our distilled images consistently out-perform all baselines across all models and datasets.
+            Please see our <a class="important-link" href="http://arxiv.org">paper</a> for many more results,
+            including cross-model performance and evaluation on more datasets,
+            including those with fine-grained classes and spurious correlations.
+      </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Image carousel -->
+<section class="section hero is-light">
+  <div class="hero-body is-centered  has-text-centered">
+    <h2 class="title is-3">Qualitative Results</h2>
+    <p class="subtitle has-text-justified">
+      Pictured below are a selection of ImageNet-100 classes distilled using different backbone models.
+      The distilled images look quite different for each backbone due to each model's unique set of biases.
+      Please see our <a class="important-link" href="gallery" target="_blank">Image Gallery</a> to browse all distilled images.
+    </p>
+    <div id="results-carousel" class="carousel results-carousel">
+      <div class="item">
+        <!-- TODO: Replace with your research result images -->
+        <img src="assets/samples_clip.png" alt="First research result visualization"/>
+        <!-- TODO: Replace with description of this result -->
+        <h2 class="subtitle has-text-centered" style="margin-bottom: 1.5rem; margin-top: 0.5rem">
+          CLIP
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="assets/samples_dino.png" alt="Second research result visualization"/>
+        <h2 class="subtitle has-text-centered" style="margin-bottom: 1.5rem; margin-top: 0.5rem">
+          DINO-v2
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="assets/samples_eva.png" alt="Third research result visualization"/>
+        <h2 class="subtitle has-text-centered" style="margin-bottom: 1.5rem; margin-top: 0.5rem">
+          EVA-02
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="assets/samples_moco.png" alt="Fourth research result visualization"/>
+        <h2 class="subtitle has-text-centered" style="margin-bottom: 1.5rem; margin-top: 0.5rem">
+          MoCo-v3
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End image carousel -->
+
+
+<!-- Image carousel -->
+<section class="section hero is-light">
+  <div class="hero-body is-centered  has-text-centered">
+    <h2 class="title is-3">Other Datasets Preview</h2>
+    <p class="subtitle has-text-justified">
+      Here we show a <b>preview</b> of our other datasets distilled with CLIP.
+      Our method excels at fine-grained visual classification datasets such as these since the learned images can capture far more discriminative detail than any one real image.
+      Please see our <a class="important-link" href="gallery" target="_blank">Image Gallery</a> to browse the full distilled datasets from all models (CLIP, DINO-v2, EVA-02, and MoCo-v3).
+    </p>
+    <div id="results-carousel" class="carousel results-carousel">
+      <div class="item">
+        <!-- TODO: Replace with your research result images -->
+        <img src="assets/flowers.png" alt="First research result visualization"/>
+        <!-- TODO: Replace with description of this result -->
+        <h2 class="subtitle has-text-centered" style="margin-bottom: 1.5rem; margin-top: 0.5rem">
+          Flowers-102
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="assets/cub.png" alt="Second research result visualization"/>
+        <h2 class="subtitle has-text-centered" style="margin-bottom: 1.5rem; margin-top: 0.5rem">
+          Caltech-UCSD Birds
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="assets/food.png" alt="Third research result visualization"/>
+        <h2 class="subtitle has-text-centered" style="margin-bottom: 1.5rem; margin-top: 0.5rem">
+          Food-101
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="assets/dogs.png" alt="Fourth research result visualization"/>
+        <h2 class="subtitle has-text-centered" style="margin-bottom: 1.5rem; margin-top: 0.5rem">
+          Stanford Dogs
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End image carousel -->
+
+
+
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@article{cazenavette2025lgm,
+  title={Dataset Distillation for Pre-Trained Self-Supervised Vision Models},
+  author={George Cazenavette and Antonio Torralba and Vincent Sitzmann},
+  journal={{NeurIPS}}},
+  year={2025},
+}</code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+<!--  <div class="container">-->
+<!--    <div class="columns is-centered">-->
+<!--      <div class="column is-8">-->
+<!--        <div class="content">-->
+
+          <p>
+            This page's code uses elements from this <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
+          </p>
+
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+</footer>
+
+<!-- Statcounter tracking code -->
+
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+  </main>
+
+  </div>
+  </body>
+  </html>
