@@ -1,0 +1,65 @@
+.charts-wrapper {
+    display: flex;
+    gap: 30px;
+    max-width: 2400px; /* reasonable limit for very wide screens */
+    margin: 0 auto;
+    padding: 0 20px;
+    align-items: stretch;
+}
+
+.chart-container {
+    /*background: white;*/
+    /*border-radius: 15px;*/
+    /*padding: 30px;*/
+    /*box-shadow: 0 10px 30px rgba(0,0,0,0.3);*/
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.chart-title {
+    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: calc(100% - 60px); /* Subtract title height */
+    width: 100%;
+}
+
+canvas {
+    width: 100% !important;
+    height: 500px !important;
+}
+
+/* Ensure chart container has adequate height on mobile */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 400px !important; /* Increase height */
+    min-height: 350px;
+  }
+
+  /* Target canvas if needed */
+  .chart-container canvas {
+    height: 100% !important;
+  }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chart-container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.chart-container:nth-child(2) {
+    animation-delay: 0.2s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}

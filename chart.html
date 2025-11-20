@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageNet Performance Comparison</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .charts-wrapper {
+            display: flex;
+            gap: 30px;
+            max-width: 1800px;
+            margin: 0 auto;
+            align-items: stretch;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            flex: 1;
+        }
+
+        .chart-title {
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        canvas {
+            max-height: 500px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chart-container {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .chart-container:nth-child(2) {
+            animation-delay: 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @media (max-width: 1200px) {
+            .charts-wrapper {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>ImageNet Model Performance Comparison</h1>
+
+    <div class="charts-wrapper">
+<!--        <div class="chart-container">-->
+<!--            <div class="chart-title">ImageNet-100 (1 Image/Class)</div>-->
+<!--            <canvas id="chart100"></canvas>-->
+<!--        </div>-->
+
+        <div class="chart-container">
+            <div class="chart-title">ImageNet-1k (1 Image/Class)</div>
+            <canvas id="chart1k"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const data = {
+            models: ['CLIP', 'DINO-v2', 'EVA-02', 'MoCo-v3', 'Average'],
+            methods: ['Distilled (Ours)', 'Neighbors', 'Centroids', 'Random'],
+            imagenet100: {
+                'Distilled (Ours)': [84.9, 91.5, 89.0, 83.4, 87.2],
+                'Neighbors': [67.8, 86.0, 78.8, 77.1, 77.4],
+                'Centroids': [77.1, 86.9, 80.9, 77.7, 80.6],
+                'Random': [56.6, 74.8, 64.5, 61.4, 64.3]
+            },
+            imagenet1k: {
+                'Distilled (Ours)': [63.0, 75.0, 70.3, 63.2, 67.9],
+                'Neighbors': [38.8, 67.7, 49.9, 56.4, 53.2],
+                'Centroids': [53.9, 69.5, 58.1, 57.4, 59.7],
+                'Random': [31.7, 50.3, 37.7, 38.8, 39.6]
+            }
+        };
+
+        const colors = {
+            'Distilled (Ours)': 'rgba(46, 204, 113, 0.8)',
+            'Neighbors': 'rgba(52, 152, 219, 0.8)',
+            'Centroids': 'rgba(155, 89, 182, 0.8)',
+            'Random': 'rgba(231, 76, 60, 0.8)'
+        };
+
+        const borderColors = {
+            'Distilled (Ours)': 'rgba(46, 204, 113, 1)',
+            'Neighbors': 'rgba(52, 152, 219, 1)',
+            'Centroids': 'rgba(155, 89, 182, 1)',
+            'Random': 'rgba(231, 76, 60, 1)'
+        };
+
+        function createChart(canvasId, dataset, title) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+
+            const datasets = data.methods.map(method => ({
+                label: method,
+                data: dataset[method],
+                backgroundColor: colors[method],
+                borderColor: borderColors[method],
+                borderWidth: 2,
+                borderRadius: 6,
+                borderSkipped: false
+            }));
+
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.models,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart',
+                        delay: (context) => {
+                            let delay = 0;
+                            if (context.type === 'data' && context.mode === 'default') {
+                                delay = context.dataIndex * 150 + context.datasetIndex * 50;
+                            }
+                            return delay;
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 13,
+                                    weight: '500'
+                                },
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'rectRounded'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 13,
+                                    weight: '500'
+                                },
+                                color: '#333'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                },
+                                color: '#666',
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Accuracy (%)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                color: '#333'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // createChart('chart100', data.imagenet100, 'ImageNet-100');
+        createChart('chart1k', data.imagenet1k, 'ImageNet-1k');
+    </script>
+</body>
+</html>
